@@ -1,5 +1,5 @@
 {
   "name": "MessageClickActions",
   "author": "Lare",
-  "description": "Hold Backspace and click to delete, double click to edit/reply. ported from equicord !!!OBS currently only delete function is implemented!!! "
+  "description": "Hold Backspace and click to delete, double click to edit/reply. ported from vencord !!!OBS currently only delete function is implemented!!! "
 }
