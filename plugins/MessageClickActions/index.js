@@ -1,4 +1,5 @@
 const {
+    plugin: { store },
     flux: { 
         dispatcher, 
         stores: { MessageStore, UserStore, PermissionStore, PermissionBits, ChannelStore, SelectedChannelStore },
@@ -12,31 +13,95 @@ const { getChannel } = ChannelStore;
 const { getChannelId } = SelectedChannelStore;
 const getCurrentChannel = () => getChannel(getChannelId());
 
+const dontReplyStore = new Set();
+
+let activeChannel = getChannelId();
+let replyingToMessage = undefined;
+let QRSymbol = Symbol("quickreply_deletePendingReply_int");
+
+let clicks = 0;
 
 // sets backspace value depending on if it is currently pressed or not
 let backspace = false; 
 async function keyDown(keyevent) {
     if (keyevent.key !== "Backspace") return;
 
-    else
-        backspace = true;
-        console.log("backspace is set to True");
+    backspace = true;
+    //console.log("backspace is set to True");
 };
 
 async function keyUp(keyevent) {
     if (keyevent.key !== "Backspace") return;
 
-    else
-        backspace = false;
-        console.log("backspace is set to False");
+    backspace = false;
+    //console.log("backspace is set to False");
 };
 
 
+function scrollToReplyingMsg() {
+	if (!store.scroll) return;
 
-function deleteMessage(e) {
-    // Check if the backspace is pressed
-    if (!backspace) return;
+	const messageContainer = document.querySelector(
+		'[data-list-id="chat-messages"]',
+	);
+	const replyingMsg = Array.from(messageContainer.children).find((elem) =>
+		elem.firstElementChild?.className?.includes("replying_"),
+	);
 
+	replyingMsg?.scrollIntoView({
+		behavior: store.scrollSmooth ? "smooth" : undefined,
+		block: "center",
+	});
+}
+
+function channelSelect(data) {
+	if (activeChannel !== data.channelId) {
+		activeChannel = data.channelId;
+	}
+}
+
+function createPendingReply(
+	channel,
+	message,
+	shouldMention,
+	showMentionToggle,
+) {
+	if (typeof showMentionToggle === "undefined")
+		showMentionToggle = channel.guild_id !== null; // DM channel showMentionToggle = false
+
+	dispatcher.dispatch({
+		type: "CREATE_PENDING_REPLY",
+		channel,
+		message,
+		shouldMention:
+			shouldMention &&
+			message.author.id !== UserStore.getCurrentUser().id,
+		showMentionToggle,
+	});
+
+	setTimeout(scrollToReplyingMsg, 100);
+}
+
+function deletePendingReply(data) {
+	dispatcher.dispatch({
+		type: "DELETE_PENDING_REPLY",
+		channelId: getChannelId(),
+		...data,
+	});
+}
+
+
+function onCreatePendingReply(data) {
+	replyingToMessage = data.message.id;
+}
+
+function onDeletePendingReply(data) {
+	replyingToMessage = undefined;
+}
+
+
+function MCA(e) {
+    
     // Find closest message element
     const messageEl = e.target.closest(`li[id^="chat-messages"]`);
     if (!messageEl) return;
@@ -48,33 +113,68 @@ function deleteMessage(e) {
     // Get the message from the MessageStore
     const message = MessageStore.getMessage(channelId, id);
     if (!message) return;
-
-    // Check if the message was sent by the current user
+    
     const currentUserId = UserStore.getCurrentUser().id;
-    if (message.author.id !== currentUserId) {
+    
+    // Check if backspace is pressed
+    if (!backspace) {
 
-        // 8192 === MANAGE_MESSAGES (https://discord.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags)
-        // Checks if user has permission to delete messages in current channel
-        const hasPermission = shelter.flux.stores.PermissionStore.can(8192n, getCurrentChannel());
-        if (!hasPermission) {
-            console.log("Cannot delete message");
-            return;
+        if (e.detail < 2) return;
+
+        // if message is sent by user, edit. else reply
+        if(!shelter.flux.stores.PermissionStore.can(2048n, getCurrentChannel())) return;
+        if(message.deleted === true) return;
+        
+        if(message.author.id !== currentUserId) {
+            deletePendingReply({
+            	[QRSymbol]: true,
+            });
+            createPendingReply(
+            	getCurrentChannel(),
+            	message,
+            	!dontReplyStore.has(getChannelId()),
+            );
         }
-    }   
+        
+        else {
+            dispatcher.dispatch({
+                type: "MESSAGE_START_EDIT",
+                channelId: channelId,
+                messageId: message.id,
+                content: message.content,
+            });
+            e.preventDefault();  
+        }
+            
+    }    
 
-    // Send a dispatch DELETE request for the message
-    dispatcher.dispatch({
-        type: "MESSAGE_DELETE",
-        id,
-        channelId,
-    });
 
-    // Send a DELETE request to delete the message
-    http.del(`/channels/${channelId}/messages/${id}`)
-        .then(() => console.log("Message deleted successfully"))
-        .catch((err) => console.error("Failed to delete message:", err));
+    else {
+        if (message.author.id !== currentUserId) {
 
-    e.preventDefault();
+            // 8192 === MANAGE_MESSAGES (https://discord.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags)
+            // Checks if user has permission to delete messages in current channel
+            const hasPermission = shelter.flux.stores.PermissionStore.can(8192n, getCurrentChannel());
+            if (!hasPermission) {
+                console.log("Cannot delete message");
+                return;
+            }
+        }  
+
+        // Send a dispatch DELETE request for the message
+        dispatcher.dispatch({
+            type: "MESSAGE_DELETE",
+            id,
+            channelId,
+        });
+
+        // Send a DELETE request to delete the message
+        http.del(`/channels/${channelId}/messages/${id}`)
+            .then(() => console.log("Message deleted successfully"))
+            .catch((err) => console.error("Failed to delete message:", err));
+
+        e.preventDefault();
+    }
 }
 
 
@@ -84,11 +184,16 @@ function onDispatch(payload) {
 
     // Observe the DOM for message elements and attach click listeners
     const unObserve = observeDom(`li[id^="chat-messages"]`, (element) => {
-        element.addEventListener("click", deleteMessage);
+        element.addEventListener("click", MCA);
     });
 
     // Clean up after 500ms to avoid memory leaks
     setTimeout(unObserve, 500);
+}
+
+function onMentionChange({ channelId, shouldMention }) {
+	if (shouldMention) dontReplyStore.delete(channelId);
+	else dontReplyStore.add(channelId);
 }
 
 export function onLoad() {
@@ -99,11 +204,16 @@ export function onLoad() {
     dispatcher.subscribe("LOAD_MESSAGES_SUCCESS", onDispatch);
 
     // Add a click listener
-    document.addEventListener("click", deleteMessage);
+    document.addEventListener("click", MCA);
 
     // Add keylisteners
     window.addEventListener("keydown", keyDown);
     window.addEventListener("keyup", keyUp);
+
+    dispatcher.subscribe("CHANNEL_SELECT", channelSelect);
+    dispatcher.subscribe("CREATE_PENDING_REPLY", onCreatePendingReply);
+    dispatcher.subscribe("DELETE_PENDING_REPLY", onDeletePendingReply);
+	dispatcher.subscribe("SET_PENDING_REPLY_SHOULD_MENTION", onMentionChange);
 }
 
 export function onUnload() {
@@ -114,15 +224,21 @@ export function onUnload() {
     dispatcher.unsubscribe("LOAD_MESSAGES_SUCCESS", onDispatch);
 
     // Remove click listener
-    document.removeEventListener("click", deleteMessage);
+    document.removeEventListener("click", MCA);
 
     // Remove keylisteners
     window.removeEventListener("keydown", keyDown);
     window.removeEventListener("keyup", keyUp);
-    
+
+
+	dispatcher.unsubscribe("CHANNEL_SELECT", channelSelect);
+    dispatcher.unsubscribe("CREATE_PENDING_REPLY", onCreatePendingReply);
+    dispatcher.unsubscribe("DELETE_PENDING_REPLY", onDeletePendingReply);
+	dispatcher.unsubscribe("SET_PENDING_REPLY_SHOULD_MENTION", onMentionChange);
+
     // Clean up any remaining event listeners
     const messageElements = document.querySelectorAll(`li[id^="chat-messages"]`);
     messageElements.forEach((element) => {
-        element.removeEventListener("click", deleteMessage);
+        element.removeEventListener("click", MCA);
     });
 }
