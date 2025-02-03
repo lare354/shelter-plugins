@@ -66,7 +66,7 @@ function MCA(e) {
 	const currentUserId = UserStore.getCurrentUser().id;
 	if (!backspace) {
 		if (e.detail < 2) return;
-		if (!shelter.flux.stores.PermissionStore.can(2048n, getCurrentChannel())) return;
+		if (getCurrentChannel().guild_id && !shelter.flux.stores.PermissionStore.can(2048n, getCurrentChannel())) return;
 		if (message.deleted === true) return;
 		if (message.author.id !== currentUserId) {
 			deletePendingReply({ [QRSymbol]: true });
