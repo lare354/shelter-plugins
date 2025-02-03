@@ -2,7 +2,7 @@ const {
     plugin: { store },
     flux: { 
         dispatcher, 
-        stores: { MessageStore, UserStore, PermissionStore, PermissionBits, ChannelStore, SelectedChannelStore },
+        stores: { MessageStore, UserStore, PermissionStore,  ChannelStore, SelectedChannelStore },
     },
     observeDom,
     http,
@@ -197,8 +197,6 @@ function onMentionChange({ channelId, shouldMention }) {
 }
 
 export function onLoad() {
-    console.log("MessageClickActions plugin loaded");
-
     // Subscribe to relevant Flux events
     dispatcher.subscribe("MESSAGE_CREATE", onDispatch);
     dispatcher.subscribe("LOAD_MESSAGES_SUCCESS", onDispatch);
@@ -217,8 +215,6 @@ export function onLoad() {
 }
 
 export function onUnload() {
-    console.log("MessageClickActions plugin unloaded");
-
     // Unsubscribe from Flux events
     dispatcher.unsubscribe("MESSAGE_CREATE", onDispatch);
     dispatcher.unsubscribe("LOAD_MESSAGES_SUCCESS", onDispatch);
