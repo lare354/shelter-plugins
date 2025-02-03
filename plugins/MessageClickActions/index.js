@@ -122,7 +122,7 @@ function MCA(e) {
         if (e.detail < 2) return;
 
         // if message is sent by user, edit. else reply
-        if(!shelter.flux.stores.PermissionStore.can(2048n, getCurrentChannel())) return;
+        if(getCurrentChannel().guild_id && !shelter.flux.stores.PermissionStore.can(2048n, getCurrentChannel())) return;
         if(message.deleted === true) return;
         
         if(message.author.id !== currentUserId) {
