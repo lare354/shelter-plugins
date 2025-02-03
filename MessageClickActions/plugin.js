@@ -3,7 +3,7 @@
 "use strict";
 
 //#region plugins/MessageClickActions/index.js
-const { plugin: { store }, flux: { dispatcher, stores: { MessageStore, UserStore, PermissionStore, PermissionBits, ChannelStore, SelectedChannelStore } }, observeDom, http } = shelter;
+const { plugin: { store }, flux: { dispatcher, stores: { MessageStore, UserStore, PermissionStore, ChannelStore, SelectedChannelStore } }, observeDom, http } = shelter;
 const { getChannel } = ChannelStore;
 const { getChannelId } = SelectedChannelStore;
 const getCurrentChannel = () => getChannel(getChannelId());
@@ -109,7 +109,6 @@ function onMentionChange({ channelId, shouldMention }) {
 else dontReplyStore.add(channelId);
 }
 function onLoad() {
-	console.log("MessageClickActions plugin loaded");
 	dispatcher.subscribe("MESSAGE_CREATE", onDispatch);
 	dispatcher.subscribe("LOAD_MESSAGES_SUCCESS", onDispatch);
 	document.addEventListener("click", MCA);
@@ -121,7 +120,6 @@ function onLoad() {
 	dispatcher.subscribe("SET_PENDING_REPLY_SHOULD_MENTION", onMentionChange);
 }
 function onUnload() {
-	console.log("MessageClickActions plugin unloaded");
 	dispatcher.unsubscribe("MESSAGE_CREATE", onDispatch);
 	dispatcher.unsubscribe("LOAD_MESSAGES_SUCCESS", onDispatch);
 	document.removeEventListener("click", MCA);
