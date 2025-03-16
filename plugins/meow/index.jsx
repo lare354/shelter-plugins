@@ -6,7 +6,7 @@ const {
 
     plugin: { store },
     observeDom,
-    fiber: { getfiber },
+    util: { getfiber },
     
     ui: {
       injectCss,
