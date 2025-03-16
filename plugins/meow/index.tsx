@@ -1,3 +1,5 @@
+import { css } from './index.scss'
+
 const {
     flux: { 
         dispatcher, 
