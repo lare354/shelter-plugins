@@ -21,6 +21,16 @@ if (!injectedCss) {
   injectCss(css)
 }
 
+// Credits to yellowsink for this messagebar stuff
+// https://github.com/yellowsink
+const appendTextToMessagebar = (text) => {
+  const elem = document.querySelector('[class*="slateContainer"]');
+  const fiber = getFiber(elem);
+  const editor = fiber.child.pendingProps.editor;
+
+  editor.insertText(text);
+};
+
 // used to get channel object with getCurrentChannel()
 const { getChannel } = ChannelStore;
 const { getChannelId } = SelectedChannelStore;
@@ -63,11 +73,10 @@ const unobserve = observeDom('[class^="channelTextArea"] [class^="buttons"]', (n
 function meow() {
     if(!shelter.flux.stores.PermissionStore.can(2048n, getCurrentChannel())) return;
     else {
-        dispatcher.dispatch({
-            type: "MESSAGE_CREATE",
-            channelId: activeChannel,
-            content: "meow",
-        })
+        appendTextToMessagebar(
+            "meow"
+        );
+      })
     }        
 }    
 
