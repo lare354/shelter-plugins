@@ -48,11 +48,6 @@ const { flux: { dispatcher, stores: { UserStore, PermissionStore, ChannelStore, 
 const { getChannel } = ChannelStore;
 const { getChannelId } = SelectedChannelStore;
 let activeChannel = getChannelId();
-let injectedCss = false;
-if (!injectedCss) {
-	injectedCss = true;
-	injectCss(css);
-}
 const meowSvg = (0, import_web$8.getNextElement)(_tmpl$);
 const unobserve = observeDom("[class^=\"channelTextArea\"] [class^=\"buttons\"]", (node) => {
 	if (document.querySelector("#invis-icon")) return;
