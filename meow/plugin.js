@@ -33,7 +33,7 @@ var require_web = __commonJS({ "solid-js/web"(exports, module) {
 } });
 
 //#endregion
-//#region plugins/meow/index.jsx
+//#region plugins/meow/index.tsx
 var import_web = __toESM(require_web(), 1);
 var import_web$1 = __toESM(require_web(), 1);
 var import_web$2 = __toESM(require_web(), 1);
