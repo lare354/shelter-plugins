@@ -39,13 +39,6 @@ const getCurrentChannel = () => getChannel(getChannelId());
 
 let activeChannel = getChannelId();
 
-let injectedCss = false
-
-if (!injectedCss) {
-  injectedCss = true
-  injectCss(css)
-}
-
 const meowSvg = (
     <svg 
         xmlns="http://www.w3.org/2000/svg" 
