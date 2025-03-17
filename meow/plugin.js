@@ -51,7 +51,7 @@ let css = `
     display: flex;
     align-items: center;
     justify-content: center;
-    background:cyan;
+    gap: 20px; 
 
     cursor: pointer;
 
