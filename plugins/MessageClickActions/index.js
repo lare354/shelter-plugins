@@ -126,6 +126,14 @@ function MCA(e) {
         if(message.deleted === true) return;
         
         if(message.author.id !== currentUserId) {
+
+            if( shelter.flux.stores.EditMessageStore.isEditingAny(channelId) ){
+                dispatcher.dispatch({
+                    type: "MESSAGE_END_EDIT",
+                    channelId: channelId,
+                });
+            }
+            
             deletePendingReply({
             	[QRSymbol]: true,
             });
