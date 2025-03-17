@@ -48,20 +48,21 @@ const _tmpl$ = /*#__PURE__*/ (0, import_web.template)(`<svg xmlns="http://www.w3
 const { flux: { dispatcher, stores: { UserStore, PermissionStore, ChannelStore, SelectedChannelStore } }, plugin: { store }, observeDom, util: { getFiber }, ui: { injectCss, Button, TextArea, ButtonLooks, tooltip }, solid: { createSignal } } = shelter;
 let css = `
 .meowContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:cyan;
 
-  cursor: pointer;
+    cursor: pointer;
 
-  /* We have to apply to the SVG because Discord hits us with a !important */
-  svg path {
-    fill: var(--interactive-normal) !important;
-  }
+    /* We have to apply to the SVG because Discord hits us with a !important */
+    svg path {
+        fill: var(--interactive-normal) !important;
+    }
 
-  &.notShowing svg path {
-    fill: var(--status-danger) !important;
-  }
+    &.notShowing svg path {
+        fill: var(--status-danger) !important;
+    }
 }
 
 .meowContainer svg {
