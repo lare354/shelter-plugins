@@ -53,7 +53,6 @@ const { getChannel } = ChannelStore;
 const { getChannelId } = SelectedChannelStore;
 const getCurrentChannel = () => getChannel(getChannelId());
 let activeChannel = getChannelId();
-async;
 const meowSvg = (0, import_web$6.getNextElement)(_tmpl$);
 const unobserve = observeDom("[class^=\"channelTextArea\"] [class^=\"buttons\"]", (node) => {
 	if (document.querySelector("#meow-icon")) return;
