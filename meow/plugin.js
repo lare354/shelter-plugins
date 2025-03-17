@@ -66,7 +66,7 @@ let css = `
 
 .meowContainer svg {
   height: 100%;
-  width: 100%;
+  width: 40%;
 }`;
 let injectedCss = false;
 if (!injectedCss) {
