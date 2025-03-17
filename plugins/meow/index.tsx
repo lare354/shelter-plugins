@@ -120,8 +120,8 @@ export function onLoad() {
 
 export function onUnload() {
     console.log("Meow unloaded");
-    unintercept()
-    unobserve()
+    unintercept();
+    unobserve();
 
     // Get rid of invis icon if it's still around
     const meowIcon = document.querySelector('#meow-icon')
