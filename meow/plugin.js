@@ -107,7 +107,6 @@ function onLoad() {
 }
 function onUnload() {
 	console.log("Meow unloaded");
-	unintercept();
 	unobserve();
 	const meowIcon = document.querySelector("#meow-icon");
 	if (meowIcon) meowIcon.remove();
