@@ -24,8 +24,7 @@ let css = `
 .meowContainer {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 200px; 
+    justify-content: center; 
 
     cursor: pointer;
 
@@ -40,7 +39,7 @@ let css = `
 }
 
 .meowContainer svg {
-  height: 50%;
+  height: 100%;
   width: 100%;
 }`;
 
@@ -110,7 +109,7 @@ const unobserve = observeDom('[class^="channelTextArea"] [class^="buttons"]', (n
     const meowIcon = (
         <div
             id="meow-icon"
-            class={ css.meowContainer }
+            //class={ css.meowContainer }
             display: flex
             align-items: center
             onclick={ handleClick() }
