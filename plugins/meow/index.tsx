@@ -22,20 +22,21 @@ const {
 
 let css = `
 .meowContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:cyan;
 
-  cursor: pointer;
+    cursor: pointer;
 
-  /* We have to apply to the SVG because Discord hits us with a !important */
-  svg path {
-    fill: var(--interactive-normal) !important;
-  }
+    /* We have to apply to the SVG because Discord hits us with a !important */
+    svg path {
+        fill: var(--interactive-normal) !important;
+    }
 
-  &.notShowing svg path {
-    fill: var(--status-danger) !important;
-  }
+    &.notShowing svg path {
+        fill: var(--status-danger) !important;
+    }
 }
 
 .meowContainer svg {
