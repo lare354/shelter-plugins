@@ -1,5 +1,3 @@
-import { css, classes } from './index.css'
-
 const {
     flux: { 
         dispatcher, 
@@ -91,6 +89,32 @@ function meow() {
 }    
 
 export function onLoad() {
+    injectCss(`
+        .meowContainer {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          width: 24px;
+
+          cursor: pointer;
+
+          /* We have to apply to the SVG because Discord hits us with a !important */
+          svg path {
+            fill: var(--interactive-normal) !important;
+          }
+
+          &.notShowing svg path {
+            fill: var(--status-danger) !important;
+          }
+        }
+
+        .meowContainer svg {
+          height: 100%;
+          width: 100%;
+        }`
+    );
+
     console.log("Meow loaded");
 }
 
