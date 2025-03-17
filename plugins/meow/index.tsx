@@ -103,23 +103,22 @@ async function handleClick() {
 }
 
 const unobserve = observeDom('[class^="channelTextArea"] [class^="buttons"]', (node) => {
-  if (document.querySelector('#meow-icon')) return
+    if (document.querySelector('#meow-icon')) return
 
-  const meowIcon = (
-    <div
-      id="meow-icon"
-      class={ css.meowContainer }
-      style={ ( node.childElementCount === 0 && { display: 'none' } ) }
-      display: flex;
-      align-items: center;;
-      onclick={ handleClick() }
-      use:tooltip={ 'meow :3' }
-    > 
-      { meowSvg }
-    </div>
-  )
+    const meowIcon = (
+        <div
+            id="meow-icon"
+            class={ css.meowContainer }
+            display: flex;
+            align-items: center;;
+            onclick={ handleClick() }
+            use:tooltip={ 'meow :3' }
+        > 
+        { meowSvg }
+        </div>
+    )
 
-  node.prepend(meowIcon)
+    node.prepend(meowIcon)
 })  
 
 export function onLoad() {
