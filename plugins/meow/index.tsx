@@ -92,7 +92,8 @@ const meowSvg = (
 )
 
 const meow = () => {
-    if(!shelter.flux.stores.PermissionStore.can(2048n, getCurrentChannel())) return;
+    //if in DMs, or has SEND_MESSAGE permission, proceed
+    if(getCurrentChannel().guild_id && !shelter.flux.stores.PermissionStore.can(2048n, getCurrentChannel())) return;
     else {
         appendTextToMessagebar(
             "meow"
