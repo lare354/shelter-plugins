@@ -136,7 +136,7 @@ function MCA(e) {
             );
         }
         
-        else if ( !EditMessageStore.isEditing(channelId, message.id)){
+        else if ( !shelter.flux.stores.EditMessageStore.isEditing(channelId, message.id)){
             dispatcher.dispatch({
                 type: "MESSAGE_START_EDIT",
                 channelId: channelId,
