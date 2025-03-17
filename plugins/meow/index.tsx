@@ -51,13 +51,18 @@ const meowSvg = (
     </svg>
 )
 
+async function handleClick() {
+    meow();
+    return;
+}
+
 const unobserve = observeDom('[class^="channelTextArea"] [class^="buttons"]', (node) => {
   if (document.querySelector('#meow-icon')) return
 
   const meowIcon = (
     <div
       id="meow-icon"
-      onClick={meow()}
+      onClick={handleclick()}
       use:tooltip={ 'meow :3' }
     >
       {meowSvg}
@@ -83,9 +88,6 @@ export function onLoad() {
           display: flex;
           align-items: center;
           justify-content: center;
-
-          width: 24px;
-          height: 24px;
 
           cursor: pointer;
 
