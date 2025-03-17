@@ -1,4 +1,4 @@
-import { css } from './index.scss'
+import { css, classes } from './index.css'
 
 const {
     flux: { 
@@ -23,6 +23,13 @@ const {
 
 // eslint-disable-next-line
 false && tooltip
+
+let injectedCss = false
+
+if (!injectedCss) {
+  injectedCss = true
+  injectCss(css)
+}
 
 // Credits to yellowsink for this messagebar stuff
 // https://github.com/yellowsink
@@ -58,21 +65,13 @@ const meowSvg = (
 )
 
 const unobserve = observeDom('[class^="channelTextArea"] [class^="buttons"]', (node) => {
-  if (document.querySelector('#invis-icon')) return
-
-  const [enabled, setEnabled] = createSignal(!!store.enabled)
-
-  const toggleEnabled = () => {
-    store.enabled = !enabled()
-    setEnabled(!enabled())
-  }
+  if (document.querySelector('#meow-icon')) return
 
   const meowIcon = (
     <div
       id="meow-icon"
-      class={classes.invisContainer + (enabled() ? ' ' + classes.notShowing : '')}
       style={(node.childElementCount === 0 && { display: 'none' })}
-      onClick={toggleEnabled}
+      onClick={meow()}
       use:tooltip={ 'meow :3' }
     >
       {meowSvg}
