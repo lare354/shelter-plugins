@@ -136,7 +136,7 @@ function MCA(e) {
             );
         }
         
-        else if ( !editMessageStore.isEditing ( channelId, message.id )){
+        else if ( !editMessageStore.isEditing(getCurrentChannel(), message.id)){
             dispatcher.dispatch({
                 type: "MESSAGE_START_EDIT",
                 channelId: channelId,
