@@ -103,7 +103,7 @@ const unobserve = observeDom("[class^=\"channelTextArea\"] [class^=\"buttons\"]"
 		(0, import_web$8.addEventListener)(_el$2, "click", handleClick(), true);
 		(0, import_web$6.insert)(_el$2, meowSvg);
 		(0, import_web$4.effect)((_p$) => {
-			const _v$ = classes.meowContainer, _v$2 = node.childElementCount === 0 && { display: "none" };
+			const _v$ = css.meowContainer, _v$2 = node.childElementCount === 0 && { display: "none" };
 			_v$ !== _p$._v$ && (0, import_web$3.className)(_el$2, _p$._v$ = _v$);
 			_p$._v$2 = (0, import_web$2.style)(_el$2, _v$2, _p$._v$2);
 			return _p$;
