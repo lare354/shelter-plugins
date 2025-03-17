@@ -36,8 +36,6 @@ const getCurrentChannel = () => getChannel(getChannelId());
 
 let activeChannel = getChannelId();
 
-async 
-
 const meowSvg = (
     <svg 
         xmlns="http://www.w3.org/2000/svg" 
