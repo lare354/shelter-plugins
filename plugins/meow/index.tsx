@@ -87,7 +87,8 @@ export function onLoad() {
           align-items: center;
           justify-content: center;
 
-          width: 40px;
+          width: 24px;
+          height: 24px;
 
           cursor: pointer;
 
@@ -102,7 +103,7 @@ export function onLoad() {
         }
 
         .meowContainer svg {
-          height: 55%;
+          height: 100%;
           width: 100%;
         }`
     );
