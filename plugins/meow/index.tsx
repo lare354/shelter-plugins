@@ -19,6 +19,41 @@ const {
 
 } = shelter;
 
+
+let css = `
+.meowContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  /* We have to apply to the SVG because Discord hits us with a !important */
+  svg path {
+    fill: var(--interactive-normal) !important;
+  }
+
+  &.notShowing svg path {
+    fill: var(--status-danger) !important;
+  }
+}
+
+.meowContainer svg {
+  height: 100%;
+  width: 100%;
+}`;
+
+
+// eslint-disable-next-line
+false && tooltip
+
+let injectedCss = false;
+
+if (!injectedCss) {
+  injectedCss = true
+  injectCss(css)
+};
+
 // Credits to yellowsink for this messagebar stuff
 // https://github.com/yellowsink
 const appendTextToMessagebar = (text) => {
@@ -85,29 +120,7 @@ const unobserve = observeDom('[class^="channelTextArea"] [class^="buttons"]', (n
 })  
 
 export function onLoad() {
-    injectCss(`
-        .meowContainer {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          cursor: pointer;
-
-          /* We have to apply to the SVG because Discord hits us with a !important */
-          svg path {
-            fill: var(--interactive-normal) !important;
-          }
-
-          &.notShowing svg path {
-            fill: var(--status-danger) !important;
-          }
-        }
-
-        .meowContainer svg {
-          height: 100%;
-          width: 100%;
-        }`
-    );
+    injectCss(css);
 
     console.log("Meow loaded");
 }
