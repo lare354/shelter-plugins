@@ -91,7 +91,7 @@ const meowSvg = (
     </svg>
 )
 
-function meow() {
+async function meow() {
     if(!shelter.flux.stores.PermissionStore.can(2048n, getCurrentChannel())) return;
     else {
         appendTextToMessagebar(
@@ -101,11 +101,6 @@ function meow() {
     }        
 }  
 
-async function handleClick() {
-    meow();
-    return;
-}
-
 const unobserve = observeDom('[class^="channelTextArea"] [class^="buttons"]', (node) => {
     if (document.querySelector('#meow-icon')) return
 
@@ -113,7 +108,7 @@ const unobserve = observeDom('[class^="channelTextArea"] [class^="buttons"]', (n
         <div
             id="meow-icon"
             class={ css.meowContainer }
-            onclick={ handleClick() }
+            onclick={ meow() }
             use:tooltip={ 'meow :3' }
         > 
         { meowSvg }
