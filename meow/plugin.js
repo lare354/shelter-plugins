@@ -88,23 +88,19 @@ const { getChannelId } = SelectedChannelStore;
 const getCurrentChannel = () => getChannel(getChannelId());
 let activeChannel = getChannelId();
 const meowSvg = (0, import_web$8.getNextElement)(_tmpl$);
-function meow() {
+async function meow() {
 	if (!shelter.flux.stores.PermissionStore.can(2048n, getCurrentChannel())) return;
 else {
 		appendTextToMessagebar("meow");
 		return;
 	}
 }
-async function handleClick() {
-	meow();
-	return;
-}
 const unobserve = observeDom("[class^=\"channelTextArea\"] [class^=\"buttons\"]", (node) => {
 	if (document.querySelector("#meow-icon")) return;
 	const meowIcon = (() => {
 		const _el$2 = (0, import_web$8.getNextElement)(_tmpl$2);
 		(0, import_web$6.use)(tooltip, _el$2, () => "meow :3");
-		(0, import_web$7.addEventListener)(_el$2, "click", handleClick(), true);
+		(0, import_web$7.addEventListener)(_el$2, "click", meow(), true);
 		(0, import_web$5.insert)(_el$2, meowSvg);
 		(0, import_web$3.effect)(() => (0, import_web$2.className)(_el$2, css.meowContainer));
 		(0, import_web$4.runHydrationEvents)();
