@@ -69,6 +69,10 @@ function MCA(e) {
 		if (getCurrentChannel().guild_id && !shelter.flux.stores.PermissionStore.can(2048n, getCurrentChannel())) return;
 		if (message.deleted === true) return;
 		if (message.author.id !== currentUserId) {
+			if (shelter.flux.stores.EditMessageStore.isEditingAny(channelId)) dispatcher.dispatch({
+				type: "MESSAGE_END_EDIT",
+				channelId
+			});
 			deletePendingReply({ [QRSymbol]: true });
 			createPendingReply(getCurrentChannel(), message, !dontReplyStore.has(getChannelId()));
 		} else if (!shelter.flux.stores.EditMessageStore.isEditing(channelId, message.id)) {
