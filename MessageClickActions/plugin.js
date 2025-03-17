@@ -71,7 +71,7 @@ function MCA(e) {
 		if (message.author.id !== currentUserId) {
 			deletePendingReply({ [QRSymbol]: true });
 			createPendingReply(getCurrentChannel(), message, !dontReplyStore.has(getChannelId()));
-		} else if (!EditMessageStore.isEditing(channelId, message.id)) {
+		} else if (!shelter.flux.stores.EditMessageStore.isEditing(channelId, message.id)) {
 			dispatcher.dispatch({
 				type: "MESSAGE_START_EDIT",
 				channelId,
