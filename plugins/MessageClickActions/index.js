@@ -2,7 +2,7 @@ const {
     plugin: { store },
     flux: { 
         dispatcher, 
-        stores: { MessageStore, UserStore, PermissionStore,  ChannelStore, SelectedChannelStore },
+        stores: { MessageStore, UserStore, PermissionStore, ChannelStore, SelectedChannelStore },
     },
     observeDom,
     http,
@@ -136,7 +136,7 @@ function MCA(e) {
             );
         }
         
-        else {
+        else if ( !editMessageStore.isEditing ( channelId, message.id )){
             dispatcher.dispatch({
                 type: "MESSAGE_START_EDIT",
                 channelId: channelId,
@@ -145,7 +145,6 @@ function MCA(e) {
             });
             e.preventDefault();  
         }
-            
     }    
 
 
