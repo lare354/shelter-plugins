@@ -109,7 +109,7 @@ const unobserve = observeDom('[class^="channelTextArea"] [class^="buttons"]', (n
       id="meow-icon"
       class={ css.meowContainer }
       style={ ( node.childElementCount === 0 && { display: 'none' } ) }
-      onClick={ handleClick() }
+      onclick={ handleClick() }
       use:tooltip={ 'meow :3' }
     > 
       { meowSvg }
