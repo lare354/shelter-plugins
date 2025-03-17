@@ -88,7 +88,7 @@ const getCurrentChannel = () => getChannel(getChannelId());
 let activeChannel = getChannelId();
 const meowSvg = (0, import_web$7.getNextElement)(_tmpl$);
 const meow = () => {
-	if (!shelter.flux.stores.PermissionStore.can(2048n, getCurrentChannel())) return;
+	if (getCurrentChannel().guild_id && !shelter.flux.stores.PermissionStore.can(2048n, getCurrentChannel())) return;
 else {
 		appendTextToMessagebar("meow");
 		return;
