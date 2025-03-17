@@ -22,13 +22,6 @@ const {
 // eslint-disable-next-line
 false && tooltip
 
-let injectedCss = false
-
-if (!injectedCss) {
-  injectedCss = true
-  injectCss(css)
-}
-
 // Credits to yellowsink for this messagebar stuff
 // https://github.com/yellowsink
 const appendTextToMessagebar = (text) => {
