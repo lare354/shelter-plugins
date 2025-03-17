@@ -109,8 +109,8 @@ const unobserve = observeDom('[class^="channelTextArea"] [class^="buttons"]', (n
         <div
             id="meow-icon"
             class={ css.meowContainer }
-            display: flex;
-            align-items: center;;
+            display: flex
+            align-items: center
             onclick={ handleClick() }
             use:tooltip={ 'meow :3' }
         > 
